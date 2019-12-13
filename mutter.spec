@@ -1,6 +1,6 @@
 Name:          mutter
 Version:       3.30.1
-Release:       6
+Release:       7
 Summary:       Window and compositing manager based on Clutter
 License:       GPLv2+
 URL:           https://www.gnome.org
@@ -26,7 +26,7 @@ BuildRequires: libXfixes-devel libXi-devel libXrandr-devel libXrender-devel libX
 BuildRequires: libxcb-devel libxkbcommon-devel libxkbcommon-x11-devel libxkbfile-devel libXtst-devel systemd-devel
 BuildRequires: mesa-libEGL-devel mesa-libGLES-devel mesa-libGL-devel mesa-libgbm-devel pam-devel pipewire-devel
 BuildRequires: upower-devel xkeyboard-config-devel zenity desktop-file-utils gtk-doc gnome-common gettext-devel 
-BuildRequires: libcanberra-devel gsettings-desktop-schemas-devel automake autoconf libtool json-glib-devel
+BuildRequires: libcanberra-devel gsettings-desktop-schemas-devel automake autoconf libtool json-glib-devel pkgconfig
 BuildRequires: libgudev-devel libinput-devel wayland-devel pkgconf-pkg-config libdrm-devel egl-wayland-devel
 
 Obsoletes:     mutter-wayland
@@ -73,23 +73,14 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %defattr(-,root,root)
 %license COPYING
 %{_bindir}/mutter
-%{_libdir}/mutter/plugins/default.so
-%{_libdir}/mutter/Cally-3*
-%{_libdir}/mutter/Clutter-3*
-%{_libdir}/mutter/ClutterX11-3*
-%{_libdir}/mutter/Cogl-3*
-%{_libdir}/mutter/CoglPango-3*
-%{_libdir}/mutter/libmutter-clutter-3*
-%{_libdir}/mutter/libmutter-cogl-3*
-%{_libdir}/mutter/libmutter-cogl-pango-3*
-%{_libdir}/mutter/libmutter-cogl-path-3*
-%{_libdir}/mutter/Meta-3*
-%{_libdir}/libmutter-3.so*
+%{_libdir}/mutter/*
+%{_libdir}/libmutter-3.so.*
 %{_prefix}/libexec/mutter-restart-helper
+%{_datadir}/locale/*
 %{_datadir}/applications/*.desktop
+%{_datadir}/glib-2.0/schemas/*.gschema.xml
 %{_datadir}/GConf/gsettings/mutter-schemas.convert
 %{_datadir}/gnome-control-center/keybindings/50-mutter*
-%{_datadir}/locale/*
 
 %files  devel
 %defattr(-,root,root)
@@ -105,9 +96,14 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %defattr(-,root,root)
 %doc NEWS 
 %{_mandir}/man1/*.1.gz
-%{_datadir}/glib-2.0/schemas/*.gschema.xml
 
 %changelog
+* Mon Dec 9 2019 openEuler Buildteam <buildteam@openeuler.org> - 3.30.1-7
+- Type:bugfix
+- Id:NA
+- SUG:NA
+- DESC:modify the files
+
 * Mon Sep 16 2019 openEuler Buildteam <buildteam@openeuler.org> - 3.30.1-6
 - Package init
 
