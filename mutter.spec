@@ -1,6 +1,6 @@
 Name:          mutter
 Version:       3.30.1
-Release:       7
+Release:       8
 Summary:       Window and compositing manager based on Clutter
 License:       GPLv2+
 URL:           https://www.gnome.org
@@ -98,6 +98,12 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_mandir}/man1/*.1.gz
 
 %changelog
+* Fri Aug 21 2020 lunankun <lunankun@huawei.com> - 3.30.1-8
+- Type:bugfix
+- Id:NA
+- SUG:NA
+- DESC:release +1 for rebuild
+
 * Mon Dec 9 2019 openEuler Buildteam <buildteam@openeuler.org> - 3.30.1-7
 - Type:bugfix
 - Id:NA
