@@ -1,6 +1,6 @@
 Name:          mutter
 Version:       3.30.1
-Release:       8
+Release:       9
 Summary:       Window and compositing manager based on Clutter
 License:       GPLv2+
 URL:           https://www.gnome.org
@@ -24,7 +24,7 @@ BuildRequires: chrpath pango-devel startup-notification-devel gnome-desktop3-dev
 BuildRequires: gobject-introspection-devel libSM-devel libwacom-devel libX11-devel libXdamage-devel libXext-devel
 BuildRequires: libXfixes-devel libXi-devel libXrandr-devel libXrender-devel libXcursor-devel libXcomposite-devel
 BuildRequires: libxcb-devel libxkbcommon-devel libxkbcommon-x11-devel libxkbfile-devel libXtst-devel systemd-devel
-BuildRequires: mesa-libEGL-devel mesa-libGLES-devel mesa-libGL-devel mesa-libgbm-devel pam-devel pipewire-devel
+BuildRequires: mesa-libEGL-devel libglvnd-devel mesa-libGL-devel mesa-libgbm-devel pam-devel pipewire-devel
 BuildRequires: upower-devel xkeyboard-config-devel zenity desktop-file-utils gtk-doc gnome-common gettext-devel 
 BuildRequires: libcanberra-devel gsettings-desktop-schemas-devel automake autoconf libtool json-glib-devel pkgconfig
 BuildRequires: libgudev-devel libinput-devel wayland-devel pkgconf-pkg-config libdrm-devel egl-wayland-devel
@@ -98,6 +98,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_mandir}/man1/*.1.gz
 
 %changelog
+* Tue Oct 13 2020 hanhui <hanhui15@huawei.com> - 3.30.1.9
+- change mesa-libEGL-devel to libglvnd-devel in buildrequires
+
 * Fri Aug 21 2020 lunankun <lunankun@huawei.com> - 3.30.1-8
 - Type:bugfix
 - Id:NA
