@@ -1,41 +1,33 @@
 Name:          mutter
-Version:       3.30.1
-Release:       8
+Version:       3.38.4
+Release:       1
 Summary:       Window and compositing manager based on Clutter
 License:       GPLv2+
 URL:           https://www.gnome.org
-Source0:       https://download.gnome.org/sources/%{name}/3.30/%{name}-%{version}.tar.xz
+Source0:       https://download.gnome.org/sources/%{name}/3.38/%{name}-%{version}.tar.xz
 
-# These patchs are from fedora29
-# Fix slow startup notification on wayland
-Patch0:        startup-notification.patch
-# Don't use switch-config when ensuring configuration
-Patch1:        0001-monitor-manager-Don-t-use-switch-config-when-ensurin.patch
-# Make current placement rule stack allocated
-Patch2:        0001-constraints-Make-current-placement-rule-stack-alloca.patch
-# Clean up texture regions
-Patch3:        0002-shaped-texture-Clean-up-texture-regions.patch
-# Defer text_input.done on an idle
-Patch4:        0001-wayland-Defer-text_input.done-on-an-idle.patch
-# Ignore text-input state commit when not focused
-Patch5:        0001-wayland-text-input-Ignore-text-input-state-commit-wh.patch
+Patch0:        0001-window-actor-Special-case-shaped-Java-windows.patch
 
 BuildRequires: chrpath pango-devel startup-notification-devel gnome-desktop3-devel glib2-devel gtk3-devel git
 BuildRequires: gobject-introspection-devel libSM-devel libwacom-devel libX11-devel libXdamage-devel libXext-devel
 BuildRequires: libXfixes-devel libXi-devel libXrandr-devel libXrender-devel libXcursor-devel libXcomposite-devel
 BuildRequires: libxcb-devel libxkbcommon-devel libxkbcommon-x11-devel libxkbfile-devel libXtst-devel systemd-devel
-BuildRequires: mesa-libEGL-devel libglvnd-devel mesa-libGL-devel mesa-libgbm-devel pam-devel pipewire-devel
+BuildRequires: mesa-libEGL-devel libglvnd-devel mesa-libGL-devel mesa-libgbm-devel pam-devel
 BuildRequires: upower-devel xkeyboard-config-devel zenity desktop-file-utils gtk-doc gnome-common gettext-devel 
 BuildRequires: libcanberra-devel gsettings-desktop-schemas-devel automake autoconf libtool json-glib-devel pkgconfig
 BuildRequires: libgudev-devel libinput-devel wayland-devel pkgconf-pkg-config libdrm-devel egl-wayland-devel
+BuildRequires: mesa-libGLES-devel pkgconfig(graphene-gobject-1.0) pkgconfig(libpipewire-0.3) >= 0.3.0
+BuildRequires: pkgconfig(sysprof-capture-4) xorg-x11-server-Xorg zenity gnome-settings-daemon-devel meson
+BuildRequires: pkgconfig(wayland-server) pkgconfig(wayland-eglstream) libgudev1-devel xorg-x11-server-Xwayland
 
-Obsoletes:     mutter-wayland
-Obsoletes:     mutter-wayland-devel
+Obsoletes:     mutter-wayland < 3.13.0
+Obsoletes:     mutter-wayland-devel < 3.13.0
 
 Conflicts:     gnome-shell < 3.21.1
 
 Requires:      gnome-control-center-filesystem libinput gsettings-desktop-schemas
 Requires:      gtk3 pipewire startup-notification dbus-x11 zenity json-glib
+Requires:      gsettings-desktop-schemas
 
 %description
 Mutter is a window and compositing manager based on Clutter, forked
@@ -45,7 +37,7 @@ from Metacity.
 Summary:       Development files and Header files for %{name}
 Requires:      %{name} = %{version}-%{release}
 Provides:      %{name}-tests
-Obsoletes:     %{name}-tests
+Obsoletes:     %{name}-tests < %{version}-%{release}
 %description   devel
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
@@ -56,41 +48,41 @@ developing applications that use %{name}.
 %autosetup -n %{name}-%{version} -p1 
 
 %build
-autoreconf -if
-(if ! test -x configure; then NOCONFIGURE=1 ./autogen.sh; fi;
- %configure  --enable-compile-warnings=maximum --enable-remote-desktop --enable-installed-tests --with-libwacom --enable-egl-device)
-
-%make_build
+%meson -Degl_device=true -Dwayland_eglstream=true -Dxwayland_initfd=disabled
+%meson_build
 
 %install
-%make_install
+%meson_install
 %delete_la_and_a
+
+%find_lang %{name}
+
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 %ldconfig_scriptlets
 
-%files 
+%files -f %{name}.lang
 %defattr(-,root,root)
 %license COPYING
 %{_bindir}/mutter
-%{_libdir}/mutter/*
-%{_libdir}/libmutter-3.so.*
+%{_libdir}/mutter-7/*
+%{_libdir}/libmutter-7.so.*
 %{_prefix}/libexec/mutter-restart-helper
-%{_datadir}/locale/*
 %{_datadir}/applications/*.desktop
 %{_datadir}/glib-2.0/schemas/*.gschema.xml
 %{_datadir}/GConf/gsettings/mutter-schemas.convert
 %{_datadir}/gnome-control-center/keybindings/50-mutter*
+%{_prefix}/lib/udev/rules.d/61-mutter.rules
 
 %files  devel
 %defattr(-,root,root)
 %{_bindir}/*
-%{_includedir}/mutter/*
+%{_includedir}/mutter-7/*
 %{_libdir}/pkgconfig/*.pc
-%{_libdir}/libmutter-3.so
+%{_libdir}/libmutter-7.so
 %{_prefix}/libexec/installed-tests/*
 %{_datadir}/installed-tests/*
-%{_datadir}/mutter/tests/stacking/*.metatest
+%{_datadir}/mutter-7/tests/stacking/*.metatest
 
 %files help
 %defattr(-,root,root)
@@ -98,6 +90,12 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_mandir}/man1/*.1.gz
 
 %changelog
+* Mon May 31 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 3.38.4-1
+- Upgrade to 3.38.4
+- Update Version, Release, BuildRequires, Obsoletes
+- Delete patches which existed in new version, add one patch
+- Use meson rebuild. update stage 'install', 'files'
+
 * Wed Aug 5 2020 orange-snn <songnannan2@huawei.com> - 3.30.1-8
 - change mesa-libEGL-devel to libglvnd-devel in buildrequires
 
