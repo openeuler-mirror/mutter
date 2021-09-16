@@ -1,6 +1,6 @@
 Name:          mutter
 Version:       3.38.4
-Release:       1
+Release:       2
 Summary:       Window and compositing manager based on Clutter
 License:       GPLv2+
 URL:           https://www.gnome.org
@@ -8,17 +8,16 @@ Source0:       https://download.gnome.org/sources/%{name}/3.38/%{name}-%{version
 
 Patch0:        0001-window-actor-Special-case-shaped-Java-windows.patch
 
-BuildRequires: chrpath pango-devel startup-notification-devel gnome-desktop3-devel glib2-devel gtk3-devel git
-BuildRequires: gobject-introspection-devel libSM-devel libwacom-devel libX11-devel libXdamage-devel libXext-devel
-BuildRequires: libXfixes-devel libXi-devel libXrandr-devel libXrender-devel libXcursor-devel libXcomposite-devel
-BuildRequires: libxcb-devel libxkbcommon-devel libxkbcommon-x11-devel libxkbfile-devel libXtst-devel systemd-devel
-BuildRequires: mesa-libEGL-devel libglvnd-devel mesa-libGL-devel mesa-libgbm-devel pam-devel
-BuildRequires: upower-devel xkeyboard-config-devel zenity desktop-file-utils gtk-doc gnome-common gettext-devel 
-BuildRequires: libcanberra-devel gsettings-desktop-schemas-devel automake autoconf libtool json-glib-devel pkgconfig
-BuildRequires: libgudev-devel libinput-devel wayland-devel pkgconf-pkg-config libdrm-devel egl-wayland-devel
-BuildRequires: mesa-libGLES-devel pkgconfig(graphene-gobject-1.0) pkgconfig(libpipewire-0.3) >= 0.3.0
-BuildRequires: pkgconfig(sysprof-capture-4) xorg-x11-server-Xorg zenity gnome-settings-daemon-devel meson
-BuildRequires: pkgconfig(wayland-server) pkgconfig(wayland-eglstream) libgudev1-devel xorg-x11-server-Xwayland
+BuildRequires: startup-notification-devel gnome-desktop3-devel 
+BuildRequires: gobject-introspection-devel libSM-devel libwacom-devel 
+BuildRequires: libxkbcommon-x11-devel libxkbfile-devel 
+BuildRequires: mesa-libEGL-devel mesa-libGL-devel mesa-libgbm-devel 
+BuildRequires: desktop-file-utils 
+BuildRequires: libcanberra-devel json-glib-devel 
+BuildRequires: libinput-devel 
+BuildRequires: pkgconfig(graphene-gobject-1.0) pkgconfig(libpipewire-0.3) >= 0.3.0
+BuildRequires: gnome-settings-daemon-devel meson
+BuildRequires: pkgconfig(wayland-eglstream) xorg-x11-server-Xwayland
 
 Obsoletes:     mutter-wayland < 3.13.0
 Obsoletes:     mutter-wayland-devel < 3.13.0
@@ -90,6 +89,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_mandir}/man1/*.1.gz
 
 %changelog
+* Wed Aug 25 2021 chenyanpanHW <chenyanpan@huawei.com> - 3.38.4-2
+- DESC: remove unnecessary BuildRequires
+
 * Mon May 31 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 3.38.4-1
 - Upgrade to 3.38.4
 - Update Version, Release, BuildRequires, Obsoletes
