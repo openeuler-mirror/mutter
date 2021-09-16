@@ -1,6 +1,6 @@
 Name:          mutter
 Version:       3.38.4
-Release:       2
+Release:       3
 Summary:       Window and compositing manager based on Clutter
 License:       GPLv2+
 URL:           https://www.gnome.org
@@ -58,11 +58,14 @@ developing applications that use %{name}.
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
+mkdir -p %{buildroot}/etc/ld.so.conf.d
+echo "/usr/lib64/mutter-7" > %{buildroot}/etc/ld.so.conf.d/%{name}-%{_arch}.conf
 %ldconfig_scriptlets
 
 %files -f %{name}.lang
 %defattr(-,root,root)
 %license COPYING
+%config(noreplace) /etc/ld.so.conf.d/%{name}-%{_arch}.conf
 %{_bindir}/mutter
 %{_libdir}/mutter-7/*
 %{_libdir}/libmutter-7.so.*
@@ -89,6 +92,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 %{_mandir}/man1/*.1.gz
 
 %changelog
+* Tue Sep 16 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 3.38.4-3
+- Add concrete dynamic library search path
+
 * Wed Aug 25 2021 chenyanpanHW <chenyanpan@huawei.com> - 3.38.4-2
 - DESC: remove unnecessary BuildRequires
 
