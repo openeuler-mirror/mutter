@@ -1,6 +1,6 @@
 Name:          mutter
 Version:       3.38.4
-Release:       3
+Release:       4
 Summary:       Window and compositing manager based on Clutter
 License:       GPLv2+
 URL:           https://www.gnome.org
@@ -18,6 +18,10 @@ BuildRequires: libinput-devel
 BuildRequires: pkgconfig(graphene-gobject-1.0) pkgconfig(libpipewire-0.3) >= 0.3.0
 BuildRequires: gnome-settings-daemon-devel meson
 BuildRequires: pkgconfig(wayland-eglstream) xorg-x11-server-Xwayland
+%ifarch riscv64
+BuildRequires: pkgconfig(libdrm)
+BuildRequires: pkgconfig(sysprof-capture-4)
+%endif
 
 Obsoletes:     mutter-wayland < 3.13.0
 Obsoletes:     mutter-wayland-devel < 3.13.0
@@ -92,6 +96,9 @@ echo "/usr/lib64/mutter-7" > %{buildroot}/etc/ld.so.conf.d/%{name}-%{_arch}.conf
 %{_mandir}/man1/*.1.gz
 
 %changelog
+* Wed Jan 12 2022 lvxiaoqian <xiaoqian@nj.iscas.ac.cn> - 3.38.4-4
+- add BuildRequires for riscv
+
 * Tue Sep 16 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 3.38.4-3
 - Add concrete dynamic library search path
 
